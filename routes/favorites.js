@@ -38,7 +38,7 @@ favRouter.route('/')
                 .populate('user')
                 .populate('films')
                 .then((favorites) => {
-                    console.log('Favorite Created', favorite);
+                    console.log('Favorite Created..', favorite);
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'application/json');
                     return res.json({"exists": false, "favorites": favorites})
