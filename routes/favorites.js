@@ -68,7 +68,7 @@ favRouter.route('/')
     .catch((err)=> next(err))
 });
 
-favRouter.route('/:filmId')
+favRouter.route('/:id')
 .get(authenticate.verifyUser, (req, res, next)=> {
     Favorites.findOne({user: req.user._id})
     .then((favorites) => {
@@ -77,7 +77,7 @@ favRouter.route('/:filmId')
             res.setHeader('Content-Type', 'application/json');
             return res.json({"exists": false, "favorites": favorites})
         }else{
-            if(favorites.films.indexOf(req.params.filmId) < 0){
+            if(favorites.films.indexOf(req.params.id) < 0){
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 return res.json({"exists": false, "favorites": favorites})
@@ -95,8 +95,8 @@ favRouter.route('/:filmId')
     Favorites.findOne({user: req.user._id})
     .then((favorite) => {
         if(favorite) {
-            if(favorite.films.indexOf(req.params.filmId) === -1){
-                favorite.films.push(req.params.filmId)
+            if(favorite.films.indexOf(req.params.id) === -1){
+                favorite.films.push(req.params.id)
                 favorite.save()
                 Favorites.findById(favorite._id)
                 .populate('user')
@@ -109,7 +109,7 @@ favRouter.route('/:filmId')
                 }, (err)=> next(err))
             }
         }else{
-            Favorites.create({"user": req.user._id, "films": [req.params.filmId]})
+            Favorites.create({"user": req.user._id, "films": [req.params.id]})
             .then((favorite) => {
                 console.log('favorite Created', favorite);
                 res.statusCode = 200;
@@ -125,7 +125,7 @@ favRouter.route('/:filmId')
     Favorites.findOne({user: req.user._id})
     .then((favorite) => {
         if(favorite) {
-            index = favorite.films.indexOf(req.params.filmId);
+            index = favorite.films.indexOf(req.params.id);
             if(index >= 0){
                 favorite.films.splice(index, 1);
                 favorite.save()
@@ -140,7 +140,7 @@ favRouter.route('/:filmId')
                     }, (err)=> next(err));
             }
             else{
-                err = new Error('Film '  + req.params.filmId + ' not found');
+                err = new Error('Film '  + req.params.id + ' not found');
                 err.status = 404;
                 return next(err);
             }

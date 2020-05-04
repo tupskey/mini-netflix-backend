@@ -23,10 +23,10 @@ mongoose.connect(url, {
     }
 )
 
-var corsOptions = {
-    origin: 'http://localhost:4200',
-    optionsSuccessStatus: 200
-  }
+// var corsOptions = {
+//     origin: 'http://localhost:4200',
+//     optionsSuccessStatus: 200
+//   }
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -36,7 +36,7 @@ app.use('/public', express.static('public'));
 
 
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(passport.initialize());
 
 app.use('/films', filmRouter);
@@ -45,7 +45,7 @@ app.use('/favorites', favRouter);
 
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.listen(port, ()=> {
     console.log('connected to port ' + port)
