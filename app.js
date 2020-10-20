@@ -6,6 +6,8 @@ const path = require('path');
 var config = require('./config');
 var passport = require('passport')
 var authenticate = require('./authenticate');
+const nodemailer = require('nodemailer');
+
 
 var filmRouter = require('./routes/film');
 var userRouter = require('./routes/user');
@@ -32,11 +34,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-app.use('/public', express.static('public'));
+
 
 
 
 app.use(cors());
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(passport.initialize());
 
 app.use('/films', filmRouter);
@@ -46,6 +49,9 @@ app.use('/favorites', favRouter);
 
 
 const port = process.env.PORT || 8080;
+app.route('/*').get((req, res) => {
+    res.sendFile(path.resolve((__dirname + '/public/index.html')));
+  })
 
 app.listen(port, ()=> {
     console.log('connected to port ' + port)

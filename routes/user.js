@@ -5,6 +5,9 @@ const passport = require('passport')
 const userRouter = express.Router();
 const User = require('../models/user');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
+let jwt = require('jsonwebtoken');
+const config = require('../config')
 
 
 const storage = multer.diskStorage({
